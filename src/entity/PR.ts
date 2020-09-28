@@ -6,5 +6,5 @@ export class PR extends BaseEntity {
 	id: ObjectID;
 
 	@Column()
-	number!: number;
+	number: number;
 }

@@ -18,5 +18,5 @@ jobs:
           password: ${{secrets.CICD_ACTIONS_DB_PASSWORD}}
           host: ${{secrets.CICD_ACTIONS_DB_HOST}}
           database: ${{secrets.CICD_ACTIONS_DB_DATABASE}}
-          pr_number: ${{secrets.CICD_ACTIONS_DB_PR_NUMBER}}
+          pr_number: 3300
           srv: ${{secrets.CICD_ACTIONS_DB_SRV}}

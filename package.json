@@ -1,0 +1,53 @@
+{
+  "name": "pr-deloy",
+  "version": "0.0.0",
+  "private": true,
+  "description": "TypeScript template action",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint:staged": "lint-staged",
+    "package": "ncc build --source-map --license licenses.txt",
+    "test": "jest",
+    "all": "yarn build && yarn format && yarn lint && yarn package && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m3ntorship/action-deploy-pr.git"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "setup"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.5",
+    "mongodb": "^3.6.2",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.26"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.10",
+    "@types/node": "^14.11.1",
+    "@typescript-eslint/parser": "^4.3.0",
+    "@vercel/ncc": "^0.23.0",
+    "eslint": "^7.8.1",
+    "eslint-plugin-github": "^4.1.1",
+    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "jest": "^24.9.0",
+    "jest-circus": "^26.4.2",
+    "js-yaml": "^3.14.0",
+    "lint-staged": "^10.4.0",
+    "prettier": "2.1.1",
+    "ts-jest": "^24.3.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
+  }
+}

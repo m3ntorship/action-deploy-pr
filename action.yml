@@ -1,0 +1,35 @@
+name: 'Your name here'
+description: 'Provide a description here'
+author: 'Your name or organization here'
+inputs:
+  type: # change this
+    required: true
+    description: 'typeorm connection type'
+
+  username: # change this
+    required: true
+    description: 'db username'
+
+  password: # change this
+    required: true
+    description: 'db password'
+
+  host: # change this
+    required: true
+    description: 'db host'
+
+  database: # change this
+    required: true
+    description: 'database name'
+
+  pr_number: # change this
+    required: true
+    description: 'pr number'
+
+  srv: # change this
+    required: true
+    description: 'whether to use srv in mongodb dbs or not'
+
+  runs:
+    using: 'node12'
+  main: 'dist/index.js'

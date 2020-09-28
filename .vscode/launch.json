@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Current TS File",
+            "name": "TS Current File",
             "type": "node",
             "request": "launch",
             "args": ["${relativeFile}"],
@@ -14,7 +14,18 @@
             "cwd": "${workspaceRoot}",
             "protocol": "inspector",
             "console": "integratedTerminal",
-            "envFile": "${workspaceFolder}/.env.test"
-        }
+            "envFile": "${workspaceFolder}/.env.local"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": [
+              "<node_internals>/**"
+            ],
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env.local"
+          }
     ]
 }

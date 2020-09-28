@@ -30,6 +30,6 @@ inputs:
     required: true
     description: 'whether to use srv in mongodb dbs or not'
 
-  runs:
-    using: 'node12'
-  main: 'dist/index.js'
+runs:
+  using: 'node12'
+  main: ./dist/index.js

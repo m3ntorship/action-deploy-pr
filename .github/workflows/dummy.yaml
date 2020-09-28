@@ -10,13 +10,14 @@ jobs:
     steps:
       - name: checkout the code
         uses: actions/checkout@v2
+      - run: ls ./dist
       - name: add pr
         uses: ./
         with:
-          type: ${{secrets.CICD_ACTIONS_DB_TYPE}}
-          username: ${{secrets.CICD_ACTIONS_DB_USERNAME}}
-          password: ${{secrets.CICD_ACTIONS_DB_PASSWORD}}
-          host: ${{secrets.CICD_ACTIONS_DB_HOST}}
-          database: ${{secrets.CICD_ACTIONS_DB_DATABASE}}
-          pr_number: 3300
-          srv: ${{secrets.CICD_ACTIONS_DB_SRV}}
+          type: '${{secrets.CICD_ACTIONS_DB_TYPE}}'
+          username: '${{secrets.CICD_ACTIONS_DB_USERNAME}}'
+          password: '${{secrets.CICD_ACTIONS_DB_PASSWORD}}'
+          host: '${{secrets.CICD_ACTIONS_DB_HOST}}'
+          database: '${{secrets.CICD_ACTIONS_DB_DATABASE}}'
+          pr_number: '3300'
+          srv: '${{secrets.CICD_ACTIONS_DB_SRV}}'

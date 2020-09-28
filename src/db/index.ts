@@ -1,5 +1,5 @@
-import {Connection, ConnectionOptions, createConnection, getConnectionOptions} from 'typeorm';
-
+import {Connection, createConnection} from 'typeorm';
+import {PR} from '../entity/PR';
 import {getInput, error, info} from '@actions/core';
 
 export const connectToDB = async (): Promise<Connection | undefined> => {
@@ -11,12 +11,7 @@ export const connectToDB = async (): Promise<Connection | undefined> => {
 	const password = getInput('password');
 	const options = '?retryWrites=true&w=majority';
 	const url = `${schema}://${username}:${password}@${host}${port}/${db}${options}`;
-	const type = getInput('type');
-
-	const DYNAMIC_OPTIONS = {
-		type,
-		url
-	};
+	const type = 'mongodb';
 
 	const pr_number = getInput('pr_number');
 	if (!pr_number) {
@@ -25,8 +20,14 @@ export const connectToDB = async (): Promise<Connection | undefined> => {
 
 	try {
 		info('starting db connection');
-		const connectionOptions: ConnectionOptions = await getConnectionOptions();
-		return createConnection(Object.assign(connectionOptions, DYNAMIC_OPTIONS));
+		return createConnection({
+			url,
+			type,
+			synchronize: true,
+			logging: false,
+			useUnifiedTopology: true,
+			entities: [PR]
+		});
 	} catch (e) {
 		error(e);
 	}

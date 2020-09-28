@@ -1,5 +1,5 @@
 {
-  "name": "pr-deloy",
+  "name": "action-deloy-pr",
   "version": "0.0.0",
   "private": true,
   "description": "TypeScript template action",

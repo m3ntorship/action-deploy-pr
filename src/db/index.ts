@@ -23,8 +23,8 @@ export const connectToDB = async (): Promise<Connection | undefined> => {
 		return createConnection({
 			url,
 			type,
-			synchronize: true,
-			logging: false,
+			synchronize: false,
+			logging: true,
 			useUnifiedTopology: true,
 			entities: [PR]
 		});

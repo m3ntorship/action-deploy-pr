@@ -18,6 +18,6 @@ jobs:
           username: '${{secrets.CICD_ACTIONS_DB_USERNAME}}'
           password: '${{secrets.CICD_ACTIONS_DB_PASSWORD}}'
           host: '${{secrets.CICD_ACTIONS_DB_HOST}}'
-          database: '${{secrets.CICD_ACTIONS_DB_DATABASE}}'
+          database: '${{secrets.CICD_ACTIONS_DB_NAME}}'
           pr_number: '3300'
           srv: '${{secrets.CICD_ACTIONS_DB_SRV}}'

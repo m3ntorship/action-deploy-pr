@@ -2,33 +2,37 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  type: # change this
+  type: 
     required: true
     description: 'typeorm connection type'
 
-  username: # change this
+  username: 
     required: true
     description: 'db username'
 
-  password: # change this
+  password: 
     required: true
     description: 'db password'
 
-  host: # change this
+  host: 
     required: true
     description: 'db host'
 
-  database: # change this
+  database: 
     required: true
     description: 'database name'
 
-  pr_number: # change this
+  pr_number: 
     required: true
     description: 'pr number'
 
-  srv: # change this
+  srv: 
     required: true
     description: 'whether to use srv in mongodb dbs or not'
+  
+  temp_resources_dir: 
+    default: 'temp'
+    description: 'temp directory to store compiled k8s resources before deployment'
 
 runs:
   using: 'node12'

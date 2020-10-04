@@ -1,5 +1,5 @@
 import {Connection, createConnection} from 'typeorm';
-import {PR} from '../entity/PR';
+import {PR} from '../entity';
 import {getInput, error, info} from '@actions/core';
 
 export const connectToDB = async (): Promise<Connection | undefined> => {

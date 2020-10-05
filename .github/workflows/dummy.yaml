@@ -14,10 +14,9 @@ jobs:
       - name: add pr
         uses: ./
         with:
-          type: '${{secrets.CICD_ACTIONS_DB_TYPE}}'
-          username: '${{secrets.CICD_ACTIONS_DB_USERNAME}}'
-          password: '${{secrets.CICD_ACTIONS_DB_PASSWORD}}'
-          host: '${{secrets.CICD_ACTIONS_DB_HOST}}'
-          database: '${{secrets.CICD_ACTIONS_DB_NAME}}'
-          pr_number: '3300'
-          srv: '${{secrets.CICD_ACTIONS_DB_SRV}}'
+          connection_string: '${{secrets.CICD_DB_CONNECTION_STRING}}'
+          pr_number: '3350'
+          deployment_path: 'deploy/apply/live'
+          temp_resources_dir: 'deploy/resources/live'
+          pr_repository: 'nile-repo'
+      - run: ls -al deploy/resources/live

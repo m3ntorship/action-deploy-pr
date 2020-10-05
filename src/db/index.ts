@@ -3,17 +3,11 @@ import {PR} from '../entity';
 import {getInput, error, info} from '@actions/core';
 
 export const connectToDB = async (): Promise<Connection | undefined> => {
-	const port = getInput('port') ? `:${getInput('port')}` : '';
-	const schema = getInput('srv') ? 'mongodb+srv' : 'mongodb';
-	const host = getInput('host');
-	const db = getInput('database');
-	const username = getInput('username');
-	const password = getInput('password');
-	const options = '?retryWrites=true&w=majority';
-	const url = `${schema}://${username}:${password}@${host}${port}/${db}${options}`;
+	const url = getInput('connection_string');
 	const type = 'mongodb';
 
 	const pr_number = getInput('pr_number');
+
 	if (!pr_number) {
 		throw new Error('no PR number provided!');
 	}

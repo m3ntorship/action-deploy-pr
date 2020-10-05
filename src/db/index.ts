@@ -20,6 +20,7 @@ export const connectToDB = async (): Promise<Connection | undefined> => {
 			synchronize: false,
 			logging: true,
 			useUnifiedTopology: true,
+			useNewUrlParser: true,
 			entities: [PR]
 		});
 	} catch (e) {

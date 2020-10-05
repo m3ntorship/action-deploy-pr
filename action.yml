@@ -2,37 +2,25 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  type: 
-    required: true
-    description: 'typeorm connection type'
-
-  username: 
-    required: true
-    description: 'db username'
-
-  password: 
-    required: true
-    description: 'db password'
-
-  host: 
-    required: true
-    description: 'db host'
-
-  database: 
-    required: true
-    description: 'database name'
-
   pr_number: 
     required: true
     description: 'pr number'
 
-  srv: 
+  connection_string: 
     required: true
-    description: 'whether to use srv in mongodb dbs or not'
+    description: 'mongodb db connection string'
   
+  deployment_path: 
+    required: true
+    description: 'directory where k8s resources located'
+
   temp_resources_dir: 
     default: 'temp'
     description: 'temp directory to store compiled k8s resources before deployment'
+  
+  pr_repository: 
+    required: true
+    description: 'the repository which the PR belongs to'
 
 runs:
   using: 'node12'

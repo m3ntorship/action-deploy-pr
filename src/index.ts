@@ -10,6 +10,7 @@ import {connectToDB} from './db';
 import {FileMetaAndContentCompiled, FileMetaAndContentSrc, K8sResourceMetadata, Vars} from './types';
 import {PR} from './entity';
 import {uniqWith, isEqual, flow} from 'lodash/fp';
+import {configureKubectl} from './configureKubectl';
 
 const DEPLOYMENT_PATH = getInput('deployment_path');
 const TEMP_RESOURCES_DIR = getInput('temp_resources_dir');
@@ -110,5 +111,8 @@ const run = async (): Promise<void> => {
 
 	await currentPR.save();
 	connection?.close();
+
+	// deploy
+	configureKubectl();
 };
 run();

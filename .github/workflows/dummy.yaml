@@ -14,6 +14,7 @@ jobs:
       - name: add pr
         uses: ./
         with:
+          kube_config: '${{secrets.KUBE_CONFIG}}'
           connection_string: '${{secrets.CICD_DB_CONNECTION_STRING}}'
           pr_number: '3350'
           deployment_path: 'deploy/apply/live'

@@ -1,6 +1,6 @@
-import {Connection, createConnection} from 'typeorm';
-import {PR} from '../entity';
-import {getInput, error, info} from '@actions/core';
+import { Connection, createConnection } from 'typeorm';
+import { PR } from '../entity';
+import { getInput, error, info } from '@actions/core';
 
 export const connectToDB = async (): Promise<Connection | undefined> => {
 	const url = getInput('connection_string');

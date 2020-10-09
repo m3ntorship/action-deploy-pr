@@ -19,5 +19,7 @@ jobs:
           pr_number: '3350'
           deployment_path: 'deploy/apply/live'
           temp_resources_dir: 'deploy/resources/live'
-          pr_repository: 'nile-repo'
+          pr_repository: '${{github.repository}}'
+          author: '${{github.event.user.login}}'
+          pr: '${{tojson(github.event)}}'
       - run: ls -al deploy/resources/live

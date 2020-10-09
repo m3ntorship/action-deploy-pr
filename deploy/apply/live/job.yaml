@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: '{{{name}}}'
+  name: '{{{project}}}'
 spec:
   template:
     # This is the pod template

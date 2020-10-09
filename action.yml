@@ -2,6 +2,9 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
+  pr_action:
+    default: 'DEPLOY'
+    description: 'whether to deploy or undeploy a PR'
   pr_number:
     required: true
     description: 'pr number'
@@ -21,13 +24,25 @@ inputs:
   pr_repository:
     required: true
     description: 'the repository which the PR belongs to'
-
+  kube_config:
+    required: true
+    description: kube config file to be used for deployment
+  author:
+    required: true
+    description: PR author (the one who opened the PR)
+  pr:
+    required: true
+    description: the pull_request event that triggered the action
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
+    - ${{inputs.pr_action}}
     - ${{inputs.pr_number}}
     - ${{inputs.connection_string}}
     - ${{inputs.deployment_path}}
     - ${{inputs.temp_resources_dir}}
     - ${{inputs.pr_repository}}
+    - ${{inputs.kube_config}}
+    - ${{inputs.author}}
+    - ${{inputs.pr}}

@@ -1,5 +1,5 @@
-import {Entity, ObjectIdColumn, ObjectID, Column, BaseEntity} from 'typeorm';
-import {K8sResourceMetadata, Vars} from '../types';
+import { Entity, ObjectIdColumn, ObjectID, Column, BaseEntity } from 'typeorm';
+import { K8sResourceMetadata, Vars } from '../types';
 
 @Entity()
 export class PR extends BaseEntity {
@@ -7,10 +7,10 @@ export class PR extends BaseEntity {
 	id: ObjectID;
 
 	@Column()
-	number: string;
+	created_at: Date;
 
 	@Column()
-	repository: string;
+	updated_at: Date;
 
 	@Column()
 	deploymentVars: Vars;

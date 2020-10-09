@@ -22,5 +22,16 @@ export interface Vars {
 	component: string;
 	environment: string;
 	version: string;
-	[x: string]: string;
+	prnumber: string;
+	prrepo: string;
+}
+
+export enum PR_ACTIONS {
+	DEPLOY = 'DEPLOY',
+	UNDEPLOY = 'UNDEPLOY'
+}
+
+export interface DeployArguments {
+	resourcesMetadata: K8sResourceMetadata[];
+	variables: Vars;
 }

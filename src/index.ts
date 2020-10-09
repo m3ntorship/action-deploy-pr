@@ -26,7 +26,7 @@ const PR_VARS: Vars = {
 	project: 'nile',
 	component: 'frontend',
 	environment: 'dev',
-	version: '6666',
+	version: '6665',
 	prnumber: PR_NUMBER,
 	prrepo: PR_REPOSITORY
 };

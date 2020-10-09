@@ -1,5 +1,5 @@
 {
-  "name": "pr-deloy",
+  "name": "action-deloy-pr",
   "version": "0.0.0",
   "private": true,
   "description": "TypeScript template action",
@@ -27,12 +27,16 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.5",
+    "lodash": "^4.17.20",
     "mongodb": "^3.6.2",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.26"
   },
   "devDependencies": {
+    "@types/glob": "^7.1.3",
     "@types/jest": "^26.0.10",
+    "@types/js-yaml": "^3.12.5",
+    "@types/lodash": "^4.14.161",
     "@types/node": "^14.11.1",
     "@typescript-eslint/parser": "^4.3.0",
     "@vercel/ncc": "^0.23.0",
@@ -40,6 +44,8 @@
     "eslint-plugin-github": "^4.1.1",
     "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "glob": "^7.1.6",
+    "handlebars": "^4.7.6",
     "husky": "^4.3.0",
     "jest": "^24.9.0",
     "jest-circus": "^26.4.2",
@@ -48,6 +54,7 @@
     "prettier": "2.1.1",
     "ts-jest": "^24.3.0",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "yaml": "^1.10.0"
   }
 }

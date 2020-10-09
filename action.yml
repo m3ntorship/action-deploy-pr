@@ -2,34 +2,47 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  type: # change this
-    required: true
-    description: 'typeorm connection type'
-
-  username: # change this
-    required: true
-    description: 'db username'
-
-  password: # change this
-    required: true
-    description: 'db password'
-
-  host: # change this
-    required: true
-    description: 'db host'
-
-  database: # change this
-    required: true
-    description: 'database name'
-
-  pr_number: # change this
+  pr_action:
+    default: 'DEPLOY'
+    description: 'whether to deploy or undeploy a PR'
+  pr_number:
     required: true
     description: 'pr number'
 
-  srv: # change this
+  connection_string:
     required: true
-    description: 'whether to use srv in mongodb dbs or not'
+    description: 'mongodb db connection string'
 
-  runs:
-    using: 'node12'
-  main: 'dist/index.js'
+  deployment_path:
+    required: true
+    description: 'directory where k8s resources located'
+
+  temp_resources_dir:
+    default: 'temp'
+    description: 'temp directory to store compiled k8s resources before deployment'
+
+  pr_repository:
+    required: true
+    description: 'the repository which the PR belongs to'
+  kube_config:
+    required: true
+    description: kube config file to be used for deployment
+  author:
+    required: true
+    description: PR author (the one who opened the PR)
+  pr:
+    required: true
+    description: the pull_request event that triggered the action
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{inputs.pr_action}}
+    - ${{inputs.pr_number}}
+    - ${{inputs.connection_string}}
+    - ${{inputs.deployment_path}}
+    - ${{inputs.temp_resources_dir}}
+    - ${{inputs.pr_repository}}
+    - ${{inputs.kube_config}}
+    - ${{inputs.author}}
+    - ${{inputs.pr}}

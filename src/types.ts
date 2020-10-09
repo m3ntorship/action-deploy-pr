@@ -26,9 +26,13 @@ export interface Vars {
 	prrepo: string;
 }
 
-export enum PR_ACTIONS {
-	DEPLOY = 'DEPLOY',
-	UNDEPLOY = 'UNDEPLOY'
+export enum DEPLOY_PR_TYPES {
+	open,
+	reopened,
+	synchronize
+}
+export enum UNDEPLOY_PR_TYPES {
+	closed
 }
 
 export interface DeployArguments {

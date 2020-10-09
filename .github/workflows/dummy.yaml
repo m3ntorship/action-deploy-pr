@@ -1,6 +1,7 @@
 name: store pr resources
 on:
   pull_request:
+    types: [opened, reopened, synchronize, closed]
     branches:
       - master
 

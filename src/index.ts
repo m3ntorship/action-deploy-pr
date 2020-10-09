@@ -1,6 +1,6 @@
 import { safeLoadAll } from 'js-yaml';
 import { readFileSync, writeFileSync, accessSync, mkdirSync } from 'fs';
-import { getInput, warning, info } from '@actions/core';
+import { getInput, warning } from '@actions/core';
 import { join, basename } from 'path';
 import { sync } from 'glob';
 
@@ -11,8 +11,9 @@ import {
 	FileMetaAndContentCompiled,
 	FileMetaAndContentSrc,
 	K8sResourceMetadata,
-	PR_ACTIONS,
-	Vars
+	Vars,
+	DEPLOY_PR_TYPES,
+	UNDEPLOY_PR_TYPES
 } from './types';
 
 import { configureKubectl, deployPR } from './configureKubectl';
@@ -20,7 +21,6 @@ import { configureKubectl, deployPR } from './configureKubectl';
 const DEPLOYMENT_PATH = getInput('deployment_path');
 const TEMP_RESOURCES_DIR = getInput('temp_resources_dir');
 const PR_NUMBER = getInput('pr_number');
-const ACTION = getInput('pr_action');
 const PR_REPOSITORY = getInput('pr_repository');
 const PR_VARS: Vars = {
 	project: 'nile',
@@ -42,8 +42,6 @@ if (!PR.pull_request) {
 		'the event you passed to the action is not a pull_request event'
 	);
 }
-
-info(PR.pull_request);
 
 const deploymentFilesPattern = join(DEPLOYMENT_PATH, '**');
 const deploymentFiles = sync(deploymentFilesPattern, {
@@ -119,14 +117,14 @@ const doNeededDeployment = async (
 	resourcesMetadata: K8sResourceMetadata[]
 ): Promise<void> => {
 	const connection: Connection | undefined = await connectToDB();
-	if (ACTION === PR_ACTIONS.DEPLOY) {
+	if (PR.action in DEPLOY_PR_TYPES) {
 		await deployPR({
 			resourcesMetadata,
 			variables: PR_VARS
 		});
 	}
 
-	if (ACTION === PR_ACTIONS.UNDEPLOY) {
+	if (PR.action in UNDEPLOY_PR_TYPES) {
 		// await undeployPR(involvedResources);
 	}
 	connection?.close();

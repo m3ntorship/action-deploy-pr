@@ -18,6 +18,8 @@ jobs:
       - run: ls ./dist
       - name: add pr
         uses: ./
+        env:
+          M3_NAME: 'ahmed'
         with:
           kube_config: '${{secrets.KUBE_CONFIG}}'
           connection_string: '${{secrets.CICD_DB_CONNECTION_STRING}}'

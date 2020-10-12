@@ -6,6 +6,8 @@ import { DeployArguments } from './types';
 import { PR } from './entity';
 import { uniqWith, isEqual, flow } from 'lodash/fp';
 
+const TEMP_RESOURCES_DIR = getInput('temp_resources_dir');
+const tempDir = join(TEMP_RESOURCES_DIR);
 export const configureKubectl = (): void => {
 	const HOME_DIR = process.env.HOME || `/home/${process.env.USER}`;
 	const kubeConfigEncoded = getInput('kube_config');
@@ -18,8 +20,8 @@ export const configureKubectl = (): void => {
 export const deployPR = async (deployArgs: DeployArguments): Promise<void> => {
 	const {
 		resourcesMetadata,
-		variables,
-		variables: { prnumber, prrepo }
+		deploymentVars,
+		deploymentVars: { prnumber, prrepo }
 	} = deployArgs;
 
 	let currentPR = await PR.findOne({
@@ -39,15 +41,16 @@ export const deployPR = async (deployArgs: DeployArguments): Promise<void> => {
 	} else {
 		currentPR = new PR();
 		currentPR.created_at = new Date();
-		currentPR.deploymentVars = variables;
+		currentPR.deploymentVars = deploymentVars;
 		currentPR.resources = resourcesMetadata;
 	}
 
 	await currentPR.save();
 
 	const k8sProcess: ChildProcessWithoutNullStreams = spawn('kubectl', [
-		'get',
-		'pods'
+		'apply',
+		'-f',
+		tempDir
 	]);
 	k8sProcess.stdout.pipe(process.stdout);
 	k8sProcess.stderr.pipe(process.stderr);

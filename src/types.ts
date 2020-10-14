@@ -25,6 +25,10 @@ export interface Vars {
 	prnumber: string;
 	prrepo: string;
 }
+export interface DeploymentVariables {
+	prnumber: number;
+	prrepo: string;
+}
 
 export enum DEPLOY_PR_TYPES {
 	open,
@@ -37,5 +41,5 @@ export enum UNDEPLOY_PR_TYPES {
 
 export interface DeployArguments {
 	resourcesMetadata: K8sResourceMetadata[];
-	variables: Vars;
+	deploymentVars: DeploymentVariables;
 }

@@ -1,7 +1,11 @@
 name: store pr resources
 on:
   pull_request:
-    types: [opened, reopened, synchronize, closed]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
     branches:
       - master
 
@@ -14,6 +18,8 @@ jobs:
       - run: ls ./dist
       - name: add pr
         uses: ./
+        env:
+          M3_NAME: 'ahmed'
         with:
           kube_config: '${{secrets.KUBE_CONFIG}}'
           connection_string: '${{secrets.CICD_DB_CONNECTION_STRING}}'

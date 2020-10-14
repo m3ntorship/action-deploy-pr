@@ -3,35 +3,26 @@ import { readFileSync, writeFileSync, accessSync, mkdirSync } from 'fs';
 import { getInput, warning } from '@actions/core';
 import { join, basename } from 'path';
 import { sync } from 'glob';
-
 import { compile } from 'handlebars';
-import { Connection } from 'typeorm';
-import { connectToDB } from './db';
+
 import {
 	FileMetaAndContentCompiled,
 	FileMetaAndContentSrc,
 	K8sResourceMetadata,
-	Vars,
 	DEPLOY_PR_TYPES,
-	UNDEPLOY_PR_TYPES
+	UNDEPLOY_PR_TYPES,
+	DeploymentVariables
 } from './types';
 
-import { configureKubectl, deployPR } from './configureKubectl';
+import { deploymentVariables } from './utils';
+
+import { configureKubectl, deployPR, undeployPR } from './configureKubectl';
 
 const DEPLOYMENT_PATH = getInput('deployment_path');
 const TEMP_RESOURCES_DIR = getInput('temp_resources_dir');
-const PR_NUMBER = getInput('pr_number');
-const PR_REPOSITORY = getInput('pr_repository');
-const PR_VARS: Vars = {
-	project: 'nile',
-	component: 'frontend',
-	environment: 'dev',
-	version: '6666',
-	prnumber: PR_NUMBER,
-	prrepo: PR_REPOSITORY
-};
-
 const PR = JSON.parse(getInput('pr'));
+const deploymentFilesPattern = join(DEPLOYMENT_PATH, '**');
+const deployVars = deploymentVariables(PR);
 
 if (!PR) {
 	throw new Error('a pr event should be sent to the action');
@@ -43,7 +34,6 @@ if (!PR.pull_request) {
 	);
 }
 
-const deploymentFilesPattern = join(DEPLOYMENT_PATH, '**');
 const deploymentFiles = sync(deploymentFilesPattern, {
 	nodir: true
 }).map(path => basename(path));
@@ -82,11 +72,11 @@ const writeSingleFile = (
 	writeFileSync(fileAbsPath, compiledContent, { encoding: 'utf-8' });
 };
 
-const transformSingleFile = (vars: Vars) => (
+const transformSingleFile = (envs: DeploymentVariables) => (
 	fileMetadataAndContent: FileMetaAndContentSrc
 ): FileMetaAndContentCompiled => {
 	const { srcContent } = fileMetadataAndContent;
-	const compiledContent = compile(srcContent, { strict: true })(vars);
+	const compiledContent = compile(srcContent, { strict: true })(envs);
 	return {
 		...fileMetadataAndContent,
 		compiledContent
@@ -98,14 +88,17 @@ const getResourcesMetadata = (
 ): K8sResourceMetadata[] => {
 	const { compiledContent } = fileMetadataAndContentCompiled;
 	const result = safeLoadAll(compiledContent).map(
-		({ kind, metadata }): K8sResourceMetadata => ({ kind, metadata })
+		({ kind, metadata: { name, labels } }): K8sResourceMetadata => ({
+			kind,
+			metadata: { name, labels }
+		})
 	);
 	return result;
 };
 
 const transformTemplatesToYamlString = (
 	files: string[],
-	vars: Vars
+	vars: DeploymentVariables
 ): FileMetaAndContentCompiled[] => {
 	const compiler = transformSingleFile(vars);
 	return files
@@ -116,24 +109,22 @@ const transformTemplatesToYamlString = (
 const doNeededDeployment = async (
 	resourcesMetadata: K8sResourceMetadata[]
 ): Promise<void> => {
-	const connection: Connection | undefined = await connectToDB();
 	if (PR.action in DEPLOY_PR_TYPES) {
 		await deployPR({
 			resourcesMetadata,
-			variables: PR_VARS
+			deploymentVars: deployVars
 		});
 	}
 
 	if (PR.action in UNDEPLOY_PR_TYPES) {
-		// await undeployPR(involvedResources);
+		await undeployPR(deployVars);
 	}
-	connection?.close();
 };
 
 const run = async (): Promise<void> => {
 	const resourcesMetadataAndContent = transformTemplatesToYamlString(
 		deploymentFiles,
-		PR_VARS
+		deployVars
 	);
 
 	// ensure temp dist folder exists
@@ -156,9 +147,9 @@ const run = async (): Promise<void> => {
 		[] as K8sResourceMetadata[]
 	);
 
-	doNeededDeployment(involvedResources);
-
 	// deploy
 	configureKubectl();
+
+	doNeededDeployment(involvedResources);
 };
 run();

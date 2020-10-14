@@ -1,5 +1,5 @@
 import { Entity, ObjectIdColumn, ObjectID, Column, BaseEntity } from 'typeorm';
-import { K8sResourceMetadata, Vars } from '../types';
+import { K8sResourceMetadata, DeploymentVariables } from '../types';
 
 @Entity()
 export class PR extends BaseEntity {
@@ -13,8 +13,11 @@ export class PR extends BaseEntity {
 	updated_at: Date;
 
 	@Column()
-	deploymentVars: Vars;
+	deploymentVars: DeploymentVariables;
 
 	@Column('simple-json')
 	resources: K8sResourceMetadata[];
+
+	@Column({ default: false })
+	undeployed = false;
 }

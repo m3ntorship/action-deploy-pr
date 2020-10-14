@@ -4,8 +4,7 @@ import { getInput, warning } from '@actions/core';
 import { join, basename } from 'path';
 import { sync } from 'glob';
 import { compile } from 'handlebars';
-import { Connection } from 'typeorm';
-import { connectToDB } from './db';
+
 import {
 	FileMetaAndContentCompiled,
 	FileMetaAndContentSrc,
@@ -17,7 +16,7 @@ import {
 
 import { deploymentVariables } from './utils';
 
-import { configureKubectl, deployPR } from './configureKubectl';
+import { configureKubectl, deployPR, undeployPR } from './configureKubectl';
 
 const DEPLOYMENT_PATH = getInput('deployment_path');
 const TEMP_RESOURCES_DIR = getInput('temp_resources_dir');
@@ -110,7 +109,6 @@ const transformTemplatesToYamlString = (
 const doNeededDeployment = async (
 	resourcesMetadata: K8sResourceMetadata[]
 ): Promise<void> => {
-	const connection: Connection | undefined = await connectToDB();
 	if (PR.action in DEPLOY_PR_TYPES) {
 		await deployPR({
 			resourcesMetadata,
@@ -119,9 +117,8 @@ const doNeededDeployment = async (
 	}
 
 	if (PR.action in UNDEPLOY_PR_TYPES) {
-		// await undeployPR(involvedResources);
+		await undeployPR(deployVars);
 	}
-	connection?.close();
 };
 
 const run = async (): Promise<void> => {

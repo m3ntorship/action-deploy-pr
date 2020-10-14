@@ -17,4 +17,7 @@ export class PR extends BaseEntity {
 
 	@Column('simple-json')
 	resources: K8sResourceMetadata[];
+
+	@Column({ default: false })
+	undeployed = false;
 }

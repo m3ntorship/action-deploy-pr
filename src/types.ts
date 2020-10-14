@@ -25,7 +25,6 @@ export interface Vars {
 	prnumber: string;
 	prrepo: string;
 }
-
 export interface DeploymentVariables {
 	prnumber: number;
 	prrepo: string;
